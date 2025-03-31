@@ -67,3 +67,42 @@ where
 order by
   total_weight desc;
 
+select crew.staff_name, evacuation_groups.party_status
+from crew
+join evacuation_groups on crew.pod_group = evacuation_groups.pod_group 
+where evacuation_groups.party_status != 'boarded';
+
+select *
+from original_crew
+left join crew on original_crew.staff_id = crew.staff_id
+where original_crew.staff_name is not null;
+
+select *
+from joined_crew
+where last_location is null;
+
+--===============================
+With
+  joined_crew as (
+    select
+      *
+    from
+      original_crew
+      left join crew on original_crew.staff_id = crew.staff_id
+    where
+      original_crew.staff_name is not null
+     
+  )
+  
+select
+  *
+from
+  joined_crew
+where
+  last_location is null
+
+SELECT 
+  staff_name, 
+  GROUP_CONCAT(role, ', ') AS combined_roles
+FROM staffing_changes
+GROUP BY staff_name;
